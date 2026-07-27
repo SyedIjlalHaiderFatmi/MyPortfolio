@@ -1,92 +1,44 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { contentCreation, socialLinks } from '../data/portfolioData';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger);
-
-const CreatorCard = ({ category }) => (
-  <div 
-    className="creator-card neon-border-glow bg-white/5 backdrop-blur-md border border-purple-500/20 rounded-3xl p-8 hover:scale-[1.02] hover:border-[#00FF41]/40 hover:shadow-[0_20px_50px_rgba(0,255,65,0.15)] transition-all duration-500 group flex flex-col justify-between"
+const CreatorCard = ({ category, index }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, amount: 0.05 }}
+    transition={{ duration: 0.4, delay: index * 0.06 }}
+    className="bg-[#0C0C1D] backdrop-blur-md border border-[#00FF41]/20 rounded-3xl p-8 hover:scale-[1.02] hover:border-[#00FF41]/60 hover:shadow-[0_20px_50px_rgba(0,255,65,0.2)] transition-all duration-500 group flex flex-col justify-between hud-corners"
   >
     <div>
       <div className="flex justify-between items-start mb-6">
-        <span className="text-4xl p-3 bg-purple-950/40 rounded-2xl group-hover:bg-[#00FF41]/20 group-hover:scale-110 transition-all duration-300">
+        <span className="text-4xl p-3 bg-[#00FF41]/10 rounded-2xl group-hover:bg-[#00FF41]/20 group-hover:scale-110 transition-all duration-300">
           {category.icon}
         </span>
-        <span className="font-jetbrains text-purple-300/60 text-xs font-bold tracking-widest uppercase py-1 px-2 border border-purple-500/20 rounded-full">
+        <span className="text-[#00D4FF] text-xs font-jetbrains font-bold tracking-widest uppercase py-1 px-3 border border-[#00D4FF]/30 rounded-full bg-[#00D4FF]/10">
           {category.stats}
         </span>
       </div>
-      <h3 className="text-white text-xl md:text-2xl font-black mb-3 tracking-tight group-hover:text-[#00FF41] transition-colors">
+      <h3 className="text-white text-xl md:text-2xl font-black mb-3 tracking-tight font-orbitron group-hover:text-[#00FF41] transition-colors">
         {category.title}
       </h3>
-      <p className="text-purple-200/60 text-sm md:text-base leading-relaxed mb-6 font-medium">
+      <p className="text-slate-300 text-sm md:text-base leading-relaxed mb-6 font-medium">
         {category.description}
       </p>
     </div>
 
-    <div className="font-jetbrains pt-4 border-t border-white/5 flex items-center justify-between text-xs tracking-wider font-bold text-purple-300/40 group-hover:text-white transition-colors">
-      <span>View Details</span>
+    <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-jetbrains tracking-wider font-bold text-[#00FF41]/70 group-hover:text-[#00FF41] transition-colors">
+      <span>VIEW DEMO / DETAILS</span>
       <svg className="w-4 h-4 transform group-hover:translate-x-1.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
       </svg>
     </div>
-  </div>
+  </motion.div>
 );
 
 const ContentCreator = () => {
-  const sectionRef = useRef(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Reveal header elements
-      gsap.from('.header-reveal', {
-        opacity: 0,
-        y: 15,
-        duration: 0.4,
-        stagger: 0.04,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 92%',
-          toggleActions: 'play none none none',
-        }
-      });
-
-      // Reveal creator cards
-      gsap.from('.creator-card', {
-        opacity: 0,
-        y: 15,
-        duration: 0.4,
-        stagger: 0.05,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.creator-container',
-          start: 'top 95%',
-          toggleActions: 'play none none none',
-        }
-      });
-
-      // Reveal CTA
-      gsap.from('.creator-cta', {
-        opacity: 0,
-        y: 15,
-        duration: 0.4,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.creator-container',
-          start: 'top 95%',
-          toggleActions: 'play none none none',
-        }
-      });
-    }, sectionRef);
-    
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section ref={sectionRef} id="creator" className="bg-[#050510] pt-24 pb-32 px-6 md:px-12 w-full relative overflow-hidden font-sans bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:80px_80px]">
+    <section id="creator" className="bg-[#050510] pt-24 pb-32 px-6 md:px-12 w-full relative overflow-hidden font-sans border-t border-[#00FF41]/10 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:80px_80px]">
       
       {/* Visual background lights */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#00FF41]/5 rounded-full blur-[160px] pointer-events-none" />
@@ -94,21 +46,27 @@ const ContentCreator = () => {
       <div className="max-w-6xl mx-auto relative z-10">
         
         {/* Header */}
-        <div className="mb-16 md:mb-20">
-          <div className="header-reveal terminal-badge mb-6">
-            {contentCreation.badge}
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.4 }}
+          className="mb-16 md:mb-20"
+        >
+          <div className="terminal-badge mb-6 inline-block">
+            [ {contentCreation.badge} ]
           </div>
-          <h2 className="header-reveal font-orbitron text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-6 tracking-tight">
+          <h2 className="font-orbitron text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-6 tracking-tight">
             {contentCreation.heading}
           </h2>
-          <p className="header-reveal text-purple-200/60 text-base md:text-lg max-w-xl font-medium leading-relaxed">
+          <p className="text-slate-400 text-base md:text-lg max-w-xl font-medium leading-relaxed">
             {contentCreation.description}
           </p>
-        </div>
+        </motion.div>
 
         {/* Content Creation Grid */}
-        <div className="creator-container grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          {contentCreation.categories.map((category) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          {contentCreation.categories.map((category, index) => (
             <a 
               key={category.title}
               href={socialLinks.instagram}
@@ -116,13 +74,19 @@ const ContentCreator = () => {
               rel="noopener noreferrer"
               className="block"
             >
-              <CreatorCard category={category} />
+              <CreatorCard category={category} index={index} />
             </a>
           ))}
         </div>
 
         {/* Instagram CTA */}
-        <div className="creator-cta mt-16 flex justify-center">
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="mt-16 flex justify-center"
+        >
           <a
             href={socialLinks.instagram}
             target="_blank"
@@ -137,7 +101,7 @@ const ContentCreator = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
           </a>
-        </div>
+        </motion.div>
 
       </div>
     </section>

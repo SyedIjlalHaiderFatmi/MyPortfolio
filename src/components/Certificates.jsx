@@ -1,61 +1,53 @@
-import React, { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { certificates } from '../data/portfolioData';
 
-gsap.registerPlugin(ScrollTrigger);
+const CertificateCard = ({ cert, index }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, amount: 0.05 }}
+    transition={{ duration: 0.4, delay: index * 0.05, ease: "easeOut" }}
+    className="hud-corners relative bg-[#0C0C1D]/90 backdrop-blur-md rounded-2xl p-5 border border-[#00FF41]/25 hover:border-[#00FF41]/70 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(0,255,65,0.2)] transition-all duration-300 group cursor-pointer overflow-hidden flex flex-col justify-between"
+  >
+    {/* Background Glow */}
+    <div className="absolute -top-12 -right-12 w-24 h-24 bg-[#00FF41]/5 rounded-full blur-2xl group-hover:bg-[#00FF41]/15 transition-all duration-500 pointer-events-none" />
 
-const CertificateCard = ({ cert }) => (
-  <div className="cert-card bg-black/20 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/25 hover:scale-105 hover:shadow-[0_15px_40px_rgba(0,255,65,0.1)] transition-all duration-500 cursor-default group">
-    <div className="flex items-start gap-4">
-      <span className="text-2xl mt-0.5 group-hover:scale-110 transition-transform duration-300">{cert.icon}</span>
-      <div>
-        <h3 className="text-white font-bold text-sm md:text-base leading-tight mb-1 group-hover:text-white transition-colors">
-          {cert.name}
-        </h3>
-        <p className="text-white/50 text-xs font-semibold uppercase tracking-wider">
-          {cert.issuer}
-        </p>
+    <div className="flex items-start justify-between gap-3 mb-3">
+      <div className="flex items-center gap-3">
+        <span className="text-3xl p-2.5 bg-[#00FF41]/10 rounded-xl border border-[#00FF41]/20 group-hover:scale-110 group-hover:bg-[#00FF41]/20 transition-all duration-300">
+          {cert.icon}
+        </span>
+        <div>
+          <h3 className="text-white font-bold text-base leading-tight group-hover:text-[#00FF41] transition-colors font-sans">
+            {cert.name}
+          </h3>
+          <p className="text-[#00D4FF] text-xs font-semibold uppercase tracking-wider font-jetbrains mt-1">
+            {cert.issuer}
+          </p>
+        </div>
       </div>
+
+      {/* Verified Shield Badge */}
+      <span className="shrink-0 flex items-center gap-1 text-[10px] font-bold font-jetbrains text-[#00FF41] bg-[#00FF41]/10 px-2 py-0.5 rounded-full border border-[#00FF41]/30">
+        <svg className="w-3 h-3 text-[#00FF41]" fill="currentColor" viewBox="0 0 20 20">
+          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+        </svg>
+        VERIFIED
+      </span>
     </div>
-  </div>
+
+    {/* Bottom Status line */}
+    <div className="pt-3 border-t border-white/5 flex items-center justify-between text-[11px] font-jetbrains text-slate-400">
+      <span className="text-[#00FF41]/70">STATUS: AUTHENTICATED</span>
+      <span className="text-[#00D4FF]/60 font-bold">2026 // SECURITY</span>
+    </div>
+  </motion.div>
 );
 
 const Certificates = () => {
-  const sectionRef = useRef(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from('.cert-card', {
-        opacity: 0,
-        scale: 0.8,
-        duration: 0.6,
-        stagger: 0.04,
-        ease: 'back.out(1.2)',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 92%',
-          toggleActions: 'play none none none',
-        }
-      });
-      
-      gsap.from('.view-all-btn', {
-        opacity: 0,
-        y: 12,
-        duration: 0.6,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 92%',
-          toggleActions: 'play none none none',
-        }
-      });
-    }, sectionRef);
-    
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section ref={sectionRef} className="bg-gradient-to-br from-[#12102A] via-[#0C0C1D] to-[#050510] pt-20 pb-28 px-6 md:px-12 w-full relative overflow-hidden font-sans border-t border-purple-500/20">
+    <section id="certificates" className="bg-gradient-to-br from-[#12102A] via-[#0C0C1D] to-[#050510] pt-24 pb-28 px-6 md:px-12 w-full relative overflow-hidden font-sans border-t border-[#00FF41]/15">
       
       {/* Torn paper divider at top */}
       <div className="absolute top-0 left-0 w-full pointer-events-none z-10 transform -translate-y-[1px] rotate-180">
@@ -66,31 +58,50 @@ const Certificates = () => {
 
       <div className="max-w-6xl mx-auto relative z-20">
         {/* Header */}
-        <div className="mb-12 md:mb-16 text-center">
-          <h2 className="font-orbitron text-4xl md:text-5xl font-black text-[#00FF41] mb-4 tracking-tight">
-            Certifications
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.4 }}
+          className="mb-14 text-center"
+        >
+          <div className="inline-block terminal-badge mb-4">
+            [ CERTIFICATIONS & CREDENTIALS ]
+          </div>
+          <h2 className="font-orbitron text-4xl md:text-5xl font-black text-[#00FF41] mb-4 tracking-tight uppercase neon-green">
+            Industry Certifications
           </h2>
-          <p className="text-purple-200/70 text-base md:text-lg font-semibold max-w-lg mx-auto">
-            Industry-recognized certifications that validate my technical expertise.
+          <p className="text-purple-200/80 text-base md:text-lg font-semibold max-w-xl mx-auto leading-relaxed">
+            Recognized cybersecurity, networking, and technical credentials validating penetration testing and security defense expertise.
           </p>
-        </div>
+        </motion.div>
 
         {/* Certificate Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-12">
-          {certificates.featured.map((cert) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 mb-10">
+          {certificates.featured.map((cert, index) => (
             <CertificateCard 
               key={cert.name} 
               cert={cert} 
+              index={index}
             />
           ))}
         </div>
 
-        {/* All certificates shown above — no external link needed */}
-        <div className="view-all-btn flex justify-center mt-4">
-          <p className="font-jetbrains text-xs text-[#00FF41]/40 tracking-widest uppercase">
-            [ {certificates.featured.length} verified certifications ]
-          </p>
-        </div>
+        {/* Status bar */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="flex justify-center mt-6"
+        >
+          <div className="px-6 py-2 rounded-full bg-[#00FF41]/10 border border-[#00FF41]/30 backdrop-blur-md">
+            <p className="font-jetbrains text-xs text-[#00FF41] font-bold tracking-widest uppercase flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#00FF41] animate-ping" />
+              [ {certificates.featured.length} VERIFIED CREDENTIALS ACTIVE ]
+            </p>
+          </div>
+        </motion.div>
       </div>
 
       {/* Decorative stars */}

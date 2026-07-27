@@ -1,12 +1,8 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useScroll, useSpring, useMotionValueEvent } from 'framer-motion';
 import { skillsContent } from '../data/portfolioData';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger);
-
-const TagCard = ({ number, title, text, className, pathLength, containerRef }) => {
+const TagCard = ({ number, title, text, className, pathLength, containerRef, index }) => {
   const ref = useRef(null);
   const [isActive, setIsActive] = useState(false);
 
@@ -31,38 +27,42 @@ const TagCard = ({ number, title, text, className, pathLength, containerRef }) =
   });
 
   return (
-    <div 
+    <motion.div 
       ref={ref}
-      className={`card-reveal w-72 sm:w-80 rounded-[2rem] p-2 relative flex flex-col items-center hover:scale-[1.02] transition-all duration-700 z-10 hud-corners ${className} ${
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, amount: 0.05 }}
+      transition={{ duration: 0.4, delay: index * 0.08 }}
+      className={`w-72 sm:w-80 rounded-[2rem] p-2 relative flex flex-col items-center hover:scale-[1.03] transition-all duration-700 z-10 hud-corners ${className} ${
         isActive 
-          ? 'bg-gradient-to-br from-[#00FF41] to-[#00D4FF] border-purple-400 shadow-[0_20px_50px_rgba(0,255,65,0.3)]' 
-          : 'bg-[#0C0C1D] border border-purple-500/20 shadow-[0_15px_40px_rgba(0,0,0,0.3)] hover:border-purple-500/40'
+          ? 'bg-gradient-to-br from-[#00FF41] to-[#00D4FF] border-[#00FF41] shadow-[0_20px_50px_rgba(0,255,65,0.35)]' 
+          : 'bg-[#0C0C1D] border border-[#00FF41]/20 shadow-[0_15px_40px_rgba(0,0,0,0.4)] hover:border-[#00FF41]/50'
       }`}
     >
       {/* The hole punch */}
-      <div className="w-5 h-5 bg-gradient-to-br from-purple-900 to-purple-950 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] absolute top-4 border border-purple-500/30 z-10 flex items-center justify-center">
-        <div className="w-2 h-2 bg-purple-300 rounded-full opacity-60"></div>
+      <div className="w-5 h-5 bg-gradient-to-br from-black to-slate-900 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.8)] absolute top-4 border border-[#00FF41]/40 z-10 flex items-center justify-center">
+        <div className="w-2 h-2 bg-[#00FF41] rounded-full opacity-80" />
       </div>
       
       {/* Inner container */}
       <div className={`w-full h-full rounded-[1.5rem] mt-8 p-8 flex flex-col min-h-[220px] transition-colors duration-700 ${
-        isActive ? 'bg-[#090514]/90' : 'bg-[#0e081d]'
+        isActive ? 'bg-[#050510]/95' : 'bg-[#080816]'
       }`}>
-        <span className={`text-xl font-bold mb-2 font-serif italic font-jetbrains transition-colors duration-700 ${
-          isActive ? 'text-[#00FF41]' : 'text-purple-400/50'
+        <span className={`text-xl font-bold mb-2 font-jetbrains transition-colors duration-700 ${
+          isActive ? 'text-[#00FF41]' : 'text-[#00FF41]/60'
         }`}>{number}</span>
         
-        <h3 className={`text-2xl font-black mb-3 tracking-tight transition-colors duration-700 ${
-          isActive ? 'text-white' : 'text-purple-100'
+        <h3 className={`text-2xl font-black mb-3 tracking-tight font-orbitron transition-colors duration-700 ${
+          isActive ? 'text-white' : 'text-slate-100'
         }`}>{title}</h3>
         
         <p className={`text-sm leading-relaxed font-medium transition-colors duration-700 ${
-          isActive ? 'text-purple-100/90' : 'text-purple-200/60'
+          isActive ? 'text-slate-200' : 'text-slate-300'
         }`}>
           {text}
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -76,74 +76,37 @@ const Services = () => {
 
   const pathLength = useSpring(scrollYProgress, { stiffness: 60, damping: 20, restDelta: 0.001 });
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Header Reveal
-      gsap.from('.header-reveal', {
-        opacity: 0,
-        y: 15,
-        duration: 0.5,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 92%',
-        }
-      });
-
-      // Cards Stagger
-      gsap.from('.card-reveal', {
-        opacity: 0,
-        scale: 0.9,
-        y: 15,
-        duration: 0.4,
-        stagger: 0.06,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.card-reveal',
-          start: 'top 92%',
-        }
-      });
-
-      // End Text Reveal
-      gsap.from('.end-text-reveal', {
-        opacity: 0,
-        duration: 0.6,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.end-text-reveal',
-          start: 'top 95%',
-        }
-      });
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
     <section 
       id="process"
       ref={containerRef}
-      className="bg-[#050510] pt-24 pb-32 px-6 md:px-12 w-full relative overflow-hidden font-sans bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:80px_80px]"
+      className="bg-[#050510] pt-24 pb-32 px-6 md:px-12 w-full relative overflow-hidden font-sans border-t border-[#00FF41]/10 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:80px_80px]"
     >
       <div className="max-w-6xl mx-auto relative md:h-[1350px]">
         
         {/* Header Content */}
-        <div className="header-reveal md:absolute top-10 left-0 md:w-[450px] z-20 mb-16 md:mb-0">
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.4 }}
+          className="md:absolute top-10 left-0 md:w-[450px] z-20 mb-16 md:mb-0"
+        >
           <div className="terminal-badge mb-8 inline-block">
-            {skillsContent.badge}
+            [ {skillsContent.badge} ]
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-6 tracking-tight relative font-orbitron">
             {skillsContent.heading}
             {/* Hand-drawn arrow */}
-            <svg className="absolute -bottom-10 right-10 w-12 h-12 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="absolute -bottom-10 right-10 w-12 h-12 text-[#00FF41]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" className="hidden" />
               <path d="M4 4 Q 10 10 15 15 M 15 15 L 10 15 M 15 15 L 15 10" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </h2>
-          <p className="text-purple-200/60 text-base md:text-lg max-w-sm font-medium leading-relaxed">
+          <p className="text-slate-400 text-base md:text-lg max-w-sm font-medium leading-relaxed">
             {skillsContent.description}
           </p>
-        </div>
+        </motion.div>
 
         {/* Desktop SVG Animated Dashed Line */}
         <svg 
@@ -238,14 +201,21 @@ const Services = () => {
                 className={positions[index]}
                 pathLength={pathLength}
                 containerRef={containerRef}
+                index={index}
               />
             );
           })}
 
           {/* Hand-drawn end text */}
-          <div className="end-text-reveal hidden md:block absolute top-[1250px] left-[60%] font-['Caveat',cursive] text-3xl text-[#00FF41] rotate-6">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="hidden md:block absolute top-[1250px] left-[60%] font-['Caveat',cursive] text-3xl text-[#00FF41] rotate-6"
+          >
             {skillsContent.endText}
-          </div>
+          </motion.div>
 
         </div>
 

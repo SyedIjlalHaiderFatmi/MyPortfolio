@@ -1,71 +1,66 @@
-import React, { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { personalInfo, socialLinks, footerContent } from '../data/portfolioData';
 
-gsap.registerPlugin(ScrollTrigger);
-
 const Footer = () => {
-  const footerRef = useRef(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from('.footer-section', {
-        opacity: 0,
-        y: 15,
-        duration: 0.4,
-        stagger: 0.06,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: 'top 95%',
-          toggleActions: 'play none none none',
-        }
-      });
-    }, footerRef);
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <footer ref={footerRef} className="bg-[#020208] text-[#d4d4d4] py-16 px-6 md:px-12 w-full font-mono text-[10px] md:text-xs tracking-widest flex flex-col justify-between min-h-[50vh] border-t border-[#00FF41]/10">
+    <footer className="bg-[#020208] text-slate-300 py-16 px-6 md:px-12 w-full font-jetbrains text-[11px] md:text-xs tracking-wider flex flex-col justify-between min-h-[50vh] border-t border-[#00FF41]/20">
       
       {/* Top Row */}
-      <div className="footer-section grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 w-full font-medium">
-        <div className="font-jetbrains flex flex-col gap-1">
+      <motion.div 
+        initial={{ opacity: 0, y: 15 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.4 }}
+        className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 w-full font-medium"
+      >
+        <div className="flex flex-col gap-1">
           {footerContent.taglines.map((line, i) => (
             <p key={i}>{line}</p>
           ))}
         </div>
         
         <div className="flex flex-col gap-1 md:items-center">
-          <p className="font-jetbrains">{footerContent.credential}</p>
+          <p>{footerContent.credential}</p>
           <a href="#projects" className="underline hover:text-[#00FF41] transition-colors mt-1 underline-offset-4 decoration-1">View Work</a>
         </div>
         
         <div className="flex flex-col gap-1 md:items-end">
-          <p>Available for opportunities</p>
+          <p className="text-[#00FF41]">Available for Cyber Security roles</p>
           <p>{new Date().getFullYear()}</p>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Middle Huge Text */}
-      <div className="footer-section w-full flex justify-center items-center py-20 md:py-24 overflow-hidden">
-        <h2 className="gradient-text-cyber text-[18vw] md:text-[16vw] leading-none font-sans font-bold tracking-tighter lowercase select-none w-full text-center">
+      {/* Middle Huge Brand Title */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.5 }}
+        className="w-full flex justify-center items-center py-16 md:py-20 overflow-hidden"
+      >
+        <h2 className="font-orbitron text-[16vw] md:text-[14vw] leading-none font-black tracking-tighter lowercase select-none text-transparent bg-clip-text bg-gradient-to-r from-[#00FF41] via-[#00D4FF] to-white w-full text-center neon-green">
           {personalInfo.brandName.toLowerCase()}
         </h2>
-      </div>
+      </motion.div>
 
       {/* Bottom Row */}
-      <div className="footer-section grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 w-full items-end font-medium">
+      <motion.div 
+        initial={{ opacity: 0, y: 15 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.4 }}
+        className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 w-full items-end font-medium"
+      >
         <div className="flex flex-col gap-6">
-          <a href="#contact" className="underline hover:text-[#00FF41] transition-colors underline-offset-4 decoration-1 font-bold">Contact</a>
-          <p className="font-jetbrains text-white/60 text-[9px] md:text-[10px]">
+          <a href="#contact" className="underline hover:text-[#00FF41] transition-colors underline-offset-4 decoration-1 font-bold text-[#00FF41]">Contact</a>
+          <p className="text-slate-400 font-jetbrains text-[9px] md:text-[10px]">
             {footerContent.copyright}
           </p>
         </div>
         
         <div className="flex flex-col gap-3 md:items-center">
-          <a href={`mailto:${personalInfo.emails.primary}`} className="underline hover:text-[#00FF41] transition-colors underline-offset-4 decoration-1 lowercase">
+          <a href={`mailto:${personalInfo.emails.primary}`} className="underline hover:text-[#00FF41] transition-colors underline-offset-4 decoration-1 lowercase text-[#00D4FF]">
             {personalInfo.emails.primary}
           </a>
           {/* Social Links */}
@@ -75,7 +70,7 @@ const Footer = () => {
               href={socialLinks.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#d4d4d4] hover:text-[#00FF41] transition-colors duration-300"
+              className="text-slate-400 hover:text-[#00FF41] transition-colors duration-300"
               aria-label="GitHub"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -87,7 +82,7 @@ const Footer = () => {
               href={socialLinks.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#d4d4d4] hover:text-[#00FF41] transition-colors duration-300"
+              className="text-slate-400 hover:text-[#00FF41] transition-colors duration-300"
               aria-label="LinkedIn"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -99,7 +94,7 @@ const Footer = () => {
               href={socialLinks.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#d4d4d4] hover:text-[#00FF41] transition-colors duration-300"
+              className="text-slate-400 hover:text-[#00FF41] transition-colors duration-300"
               aria-label="Instagram"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -114,12 +109,12 @@ const Footer = () => {
             href={socialLinks.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-[#00FF41] transition-colors underline-offset-4 decoration-1"
+            className="underline hover:text-[#00FF41] transition-colors underline-offset-4 decoration-1 text-[#00D4FF]"
           >
             Explore My GitHub
           </a>
         </div>
-      </div>
+      </motion.div>
     </footer>
   );
 };

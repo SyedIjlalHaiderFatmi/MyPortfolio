@@ -1,9 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { projects, socialLinks } from '../data/portfolioData';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const GitHubIcon = () => (
   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -17,36 +14,40 @@ const ExternalLinkIcon = () => (
   </svg>
 );
 
-const ProjectCard = ({ project }) => (
-  <div 
-    className={`project-card relative rounded-2xl p-[1px] group transition-all duration-500 neon-border-glow ${
+const ProjectCard = ({ project, index }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, amount: 0.05 }}
+    transition={{ duration: 0.4, delay: index * 0.08 }}
+    className={`relative rounded-2xl p-[1px] group transition-all duration-500 neon-border-glow ${
       project.isFlagship ? 'hud-corners' : ''
     } ${
       project.isFlagship 
-        ? 'bg-gradient-to-br from-[#00FF41]/50 via-[#00D4FF]/10 to-[#00FF41]/30 hover:from-[#00FF41] hover:via-[#00D4FF]/30 hover:to-[#00FF41]/60' 
-        : 'bg-white/10 hover:bg-white/20'
+        ? 'bg-gradient-to-br from-[#00FF41]/50 via-[#00D4FF]/20 to-[#00FF41]/30 hover:from-[#00FF41] hover:via-[#00D4FF]/40 hover:to-[#00FF41]' 
+        : 'bg-white/10 hover:bg-[#00FF41]/30'
     }`}
   >
     <div className={`rounded-2xl p-6 md:p-8 h-full backdrop-blur-md transition-all duration-500 ${
       project.isFlagship 
-        ? 'bg-[#0e081d]/95 group-hover:bg-[#0e081d]/90' 
-        : 'bg-[#130a24]/90 group-hover:bg-[#130a24]/80'
+        ? 'bg-[#0C0C1D]/95 group-hover:bg-[#0C0C1D]/90' 
+        : 'bg-[#0C0C1D]/90 group-hover:bg-[#0C0C1D]/80'
     }`}>
       {/* Badge */}
       {project.badge && (
-        <span className="terminal-badge mb-4">
+        <span className="terminal-badge mb-4 inline-block">
           {project.badge}
         </span>
       )}
 
       {/* Number + Title */}
       <div className="flex items-baseline gap-4 mb-4">
-        <span className="text-5xl font-black text-white/10 font-serif italic font-jetbrains">{project.number}</span>
-        <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight">{project.title}</h3>
+        <span className="text-5xl font-black text-[#00FF41]/20 font-jetbrains">{project.number}</span>
+        <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight font-orbitron group-hover:text-[#00FF41] transition-colors">{project.title}</h3>
       </div>
 
       {/* Description */}
-      <p className="text-white/60 text-sm md:text-base leading-relaxed mb-6 max-w-2xl font-medium">
+      <p className="text-slate-300 text-sm md:text-base leading-relaxed mb-6 max-w-2xl font-medium">
         {project.description}
       </p>
 
@@ -55,7 +56,7 @@ const ProjectCard = ({ project }) => (
         {project.techTags.map((tag) => (
           <span 
             key={tag}
-            className="font-jetbrains px-3 py-1 text-xs font-bold text-white/70 bg-white/5 rounded-full border border-white/10 hover:bg-[#00FF41]/20 hover:border-[#00FF41]/30 hover:text-[#00FF41] transition-all duration-300 cursor-default"
+            className="font-jetbrains px-3 py-1 text-xs font-bold text-[#00D4FF] bg-[#00D4FF]/10 rounded-full border border-[#00D4FF]/20 hover:bg-[#00FF41]/20 hover:border-[#00FF41]/40 hover:text-[#00FF41] transition-all duration-300 cursor-default"
           >
             {tag}
           </span>
@@ -70,7 +71,7 @@ const ProjectCard = ({ project }) => (
             href={project.links.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white text-sm font-semibold hover:bg-[#00FF41] hover:text-black transition-all duration-300 group/btn"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 border border-white/20 text-white text-sm font-semibold hover:bg-[#00FF41] hover:text-black hover:border-[#00FF41] transition-all duration-300"
           >
             <GitHubIcon />
             GitHub
@@ -83,9 +84,9 @@ const ProjectCard = ({ project }) => (
             href={project.links.demo || '#'}
             target={project.links.demo ? "_blank" : undefined}
             rel={project.links.demo ? "noopener noreferrer" : undefined}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
               project.links.demo 
-                ? 'bg-gradient-to-r from-[#00FF41] to-[#00D4FF] text-black hover:shadow-[0_0_20px_rgba(0,255,65,0.4)]' 
+                ? 'bg-gradient-to-r from-[#00FF41] to-[#00D4FF] text-black font-bold hover:shadow-[0_0_20px_rgba(0,255,65,0.5)]' 
                 : 'bg-white/5 text-white/40 border border-white/10 cursor-not-allowed'
             }`}
           >
@@ -100,7 +101,7 @@ const ProjectCard = ({ project }) => (
             href={project.links.frontendDemo}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#00FF41] to-[#00D4FF] text-black text-sm font-semibold hover:shadow-[0_0_20px_rgba(0,255,65,0.4)] transition-all duration-300"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#00FF41] to-[#00D4FF] text-black text-sm font-bold hover:shadow-[0_0_20px_rgba(0,255,65,0.4)] transition-all duration-300"
           >
             <ExternalLinkIcon />
             Frontend Demo
@@ -113,7 +114,7 @@ const ProjectCard = ({ project }) => (
             href={project.links.backendApi}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white text-sm font-semibold hover:bg-white/20 transition-all duration-300"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 border border-white/20 text-white text-sm font-semibold hover:bg-white/20 transition-all duration-300"
           >
             <ExternalLinkIcon />
             Backend API
@@ -121,80 +122,57 @@ const ProjectCard = ({ project }) => (
         )}
       </div>
     </div>
-  </div>
+  </motion.div>
 );
 
 const Projects = () => {
-  const sectionRef = useRef(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Reveal header elements
-      gsap.from('.header-reveal', {
-        opacity: 0,
-        y: 15,
-        duration: 0.4,
-        stagger: 0.04,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 92%',
-          toggleActions: 'play none none none',
-        }
-      });
-
-      // Reveal project cards
-      gsap.from('.project-card', {
-        opacity: 0,
-        y: 15,
-        duration: 0.4,
-        stagger: 0.05,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.projects-container',
-          start: 'top 95%',
-          toggleActions: 'play none none none',
-        }
-      });
-    }, sectionRef);
-    
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section ref={sectionRef} id="projects" className="bg-[#050510] pt-24 pb-32 px-6 md:px-12 w-full relative overflow-hidden font-sans bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:80px_80px]">
+    <section id="projects" className="bg-[#050510] pt-24 pb-32 px-6 md:px-12 w-full relative overflow-hidden font-sans border-t border-[#00FF41]/10 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:80px_80px]">
       <div className="max-w-6xl mx-auto">
         
         {/* Header */}
-        <div className="mb-16 md:mb-20">
-          <div className="header-reveal terminal-badge mb-8">
-            Featured Projects
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.4 }}
+          className="mb-16 md:mb-20"
+        >
+          <div className="terminal-badge mb-6 inline-block">
+            [ FEATURED PROJECTS ]
           </div>
-          <h2 className="header-reveal font-orbitron text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-6 tracking-tight">
+          <h2 className="font-orbitron text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-6 tracking-tight">
             Work that speaks <br className="hidden md:block" />for itself
           </h2>
-          <p className="header-reveal text-white/50 text-base md:text-lg max-w-lg font-medium leading-relaxed">
-            A selection of projects that showcase my expertise in full-stack development and modern architecture.
+          <p className="text-slate-400 text-base md:text-lg max-w-lg font-medium leading-relaxed">
+            A selection of custom Python security tools, network monitoring software, and machine learning applications.
           </p>
-        </div>
+        </motion.div>
 
         {/* Project Cards */}
-        <div className="projects-container flex flex-col gap-6 md:gap-8">
-          {projects.map((project) => (
+        <div className="flex flex-col gap-6 md:gap-8">
+          {projects.map((project, index) => (
             <ProjectCard 
               key={project.id} 
               project={project} 
+              index={index}
             />
           ))}
         </div>
 
         {/* GitHub CTA */}
-        <div className="project-card mt-16 flex justify-center">
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="mt-16 flex justify-center"
+        >
           <a
             href={socialLinks.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 px-8 py-4 rounded-full border border-white/20 text-white font-bold text-lg hover:bg-[#00FF41] hover:text-black hover:shadow-[0_0_30px_rgba(0,255,65,0.15)] transition-all duration-500 group"
+            className="flex items-center gap-3 px-8 py-4 rounded-full border border-[#00FF41]/30 bg-[#0C0C1D] text-white font-bold text-lg hover:bg-[#00FF41] hover:text-black hover:shadow-[0_0_30px_rgba(0,255,65,0.3)] transition-all duration-300 group"
           >
             <GitHubIcon />
             Explore All My Repositories
@@ -202,7 +180,7 @@ const Projects = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
           </a>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

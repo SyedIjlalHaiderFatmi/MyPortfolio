@@ -1,10 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { emailjsConfig, personalInfo, socialLinks } from '../data/portfolioData';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
   const ref = useRef(null);
@@ -18,23 +14,6 @@ const Contact = () => {
   
   // Parallax translation for the big text
   const y = useTransform(scrollYProgress, [0, 1], ["-20%", "30%"]);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from('.contact-form-card', {
-        opacity: 0,
-        y: 15,
-        duration: 0.4,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: ref.current,
-          start: 'top 92%',
-          toggleActions: 'play none none none',
-        }
-      });
-    }, ref);
-    return () => ctx.revert();
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,7 +34,7 @@ const Contact = () => {
       return;
     }
 
-    // Check if EmailJS is configured (checking both placeholder values and falsy states)
+    // Check if EmailJS is configured
     const isConfigured = 
       emailjsConfig.serviceId && 
       emailjsConfig.serviceId !== 'YOUR_EMAILJS_SERVICE_ID' &&
@@ -94,15 +73,14 @@ const Contact = () => {
   };
 
   return (
-    <section ref={ref} id="contact" className="bg-[#090514] w-full min-h-screen relative overflow-hidden flex items-end pt-32 pb-0 md:pb-0 border-t border-purple-500/20">
+    <section ref={ref} id="contact" className="bg-[#050510] w-full min-h-screen relative overflow-hidden flex items-end pt-32 pb-0 md:pb-0 border-t border-[#00FF41]/20">
       {/* Huge Background Text */}
       <motion.div 
         style={{ y }}
         className="absolute top-0 left-0 w-full h-full flex flex-col justify-start items-center overflow-hidden pointer-events-none z-0 pt-16 md:pt-12 opacity-15"
       >
         <h1 
-          className="font-orbitron text-[25vw] leading-[0.75] font-black text-[#00FF41] uppercase tracking-tighter select-none scale-y-[1.6] origin-top"
-          style={{ fontFamily: "'Impact', 'Arial Black', sans-serif" }}
+          className="font-orbitron text-[25vw] leading-[0.75] font-black text-[#00FF41] uppercase tracking-tighter select-none scale-y-[1.6] origin-top neon-green"
         >
           Contact
         </h1>
@@ -110,19 +88,23 @@ const Contact = () => {
 
       {/* Form Card Overlay */}
       <div className="relative z-10 w-full flex justify-end items-end">
-        <div 
-          className="contact-form-card bg-gradient-to-br from-[#0C0C1D] via-[#12102A] to-[#050510] border border-[#00FF41]/20 w-full md:w-[85%] lg:w-[75%] p-8 md:p-16 text-white flex flex-col justify-between shadow-[0_20px_60px_rgba(0,255,65,0.15)]"
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.05 }}
+          transition={{ duration: 0.5 }}
+          className="hud-corners bg-gradient-to-br from-[#0C0C1D] via-[#12102A] to-[#050510] border border-[#00FF41]/30 w-full md:w-[85%] lg:w-[75%] p-8 md:p-16 text-white flex flex-col justify-between shadow-[0_20px_60px_rgba(0,255,65,0.15)]"
         >
           <div className="flex flex-col sm:flex-row justify-between items-start gap-8 mb-12">
-            <div className="font-jetbrains text-xs font-bold tracking-[0.2em] uppercase opacity-90">
-              Reach Me
+            <div className="text-xs font-jetbrains font-bold tracking-[0.2em] uppercase text-[#00FF41]">
+              [ REACH ME // TRANSMIT MESSAGE ]
             </div>
             {/* Instagram Quick Link */}
             <a 
               href={socialLinks.instagram} 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="flex items-center gap-2 text-xs font-black uppercase tracking-wider bg-white/10 hover:bg-[#00FF41] hover:text-black border border-white/20 px-4 py-2 rounded-full transition-all duration-300"
+              className="flex items-center gap-2 text-xs font-jetbrains font-black uppercase tracking-wider bg-[#00FF41]/10 hover:bg-[#00FF41] hover:text-black border border-[#00FF41]/30 px-4 py-2 rounded-full transition-all duration-300"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" /></svg>
               DM on Instagram
@@ -140,7 +122,7 @@ const Contact = () => {
                     name="first_name"
                     placeholder="First Name" 
                     required
-                    className="w-full bg-transparent border-b border-white/40 pb-3 text-lg focus:outline-none focus:border-[#00FF41] transition-colors placeholder-white font-medium rounded-none"
+                    className="w-full bg-transparent border-b border-white/30 pb-3 text-lg focus:outline-none focus:border-[#00FF41] transition-colors placeholder-slate-400 font-medium rounded-none font-jetbrains"
                   />
                 </div>
                 <div className="relative">
@@ -149,7 +131,7 @@ const Contact = () => {
                     id="lastName" 
                     name="last_name"
                     placeholder="Last Name" 
-                    className="w-full bg-transparent border-b border-white/40 pb-3 text-lg focus:outline-none focus:border-[#00FF41] transition-colors placeholder-white font-medium rounded-none"
+                    className="w-full bg-transparent border-b border-white/30 pb-3 text-lg focus:outline-none focus:border-[#00FF41] transition-colors placeholder-slate-400 font-medium rounded-none font-jetbrains"
                   />
                 </div>
                 <div className="relative">
@@ -157,9 +139,9 @@ const Contact = () => {
                     type="email" 
                     id="email" 
                     name="user_email"
-                    placeholder="Email" 
+                    placeholder="Email Address" 
                     required
-                    className="w-full bg-transparent border-b border-white/40 pb-3 text-lg focus:outline-none focus:border-[#00FF41] transition-colors placeholder-white font-medium rounded-none"
+                    className="w-full bg-transparent border-b border-white/30 pb-3 text-lg focus:outline-none focus:border-[#00FF41] transition-colors placeholder-slate-400 font-medium rounded-none font-jetbrains"
                   />
                 </div>
               </div>
@@ -170,10 +152,10 @@ const Contact = () => {
                   <textarea 
                     id="message" 
                     name="message"
-                    placeholder="Type your message here" 
+                    placeholder="Type your security inquiry or message here..." 
                     required
-                    className="w-full h-full min-h-[120px] bg-transparent border-b border-white/40 pb-3 text-lg focus:outline-none focus:border-[#00FF41] transition-colors placeholder-white font-medium resize-none rounded-none"
-                  ></textarea>
+                    className="w-full h-full min-h-[120px] bg-transparent border-b border-white/30 pb-3 text-lg focus:outline-none focus:border-[#00FF41] transition-colors placeholder-slate-400 font-medium resize-none rounded-none font-jetbrains"
+                  />
                 </div>
               </div>
             </div>
@@ -181,12 +163,12 @@ const Contact = () => {
             {/* Bottom Section */}
             <div className="flex flex-col md:flex-row gap-12 mt-4">
               {/* Left text */}
-              <div className="flex-1 flex items-start gap-4 text-sm font-medium text-white/90">
+              <div className="flex-1 flex items-start gap-4 text-sm font-medium text-slate-300">
                 <input 
                   type="checkbox" 
                   id="permission" 
-                  className="mt-1 w-4 h-4 rounded-sm border-white/40 bg-transparent text-white focus:ring-white focus:ring-offset-0 focus:ring-offset-transparent cursor-pointer" 
-                  style={{ accentColor: "white" }}
+                  className="mt-1 w-4 h-4 rounded-sm border-white/40 bg-transparent text-[#00FF41] focus:ring-[#00FF41] focus:ring-offset-0 focus:ring-offset-transparent cursor-pointer" 
+                  style={{ accentColor: "#00FF41" }}
                 />
                 <label htmlFor="permission" className="cursor-pointer max-w-[280px] leading-snug">
                   I give permission to contact me at this email address.
@@ -194,30 +176,30 @@ const Contact = () => {
               </div>
 
               {/* Right text & button */}
-              <div className="flex-1 flex flex-col gap-8 text-xs text-white/70 font-medium">
+              <div className="flex-1 flex flex-col gap-8 text-xs text-slate-400 font-medium">
                 <p className="leading-relaxed max-w-[400px]">
                   Your message will be sent directly to my inbox. I typically respond within 24-48 hours.
                 </p>
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-6">
                   <p className="max-w-[250px] leading-relaxed">
-                    For urgent inquiries, reach me at <a href={`mailto:${personalInfo.emails.primary}`} className="underline hover:text-white transition-colors">{personalInfo.emails.primary}</a>
+                    For urgent inquiries: <a href={`mailto:${personalInfo.emails.primary}`} className="underline text-[#00D4FF] hover:text-white transition-colors">{personalInfo.emails.primary}</a>
                   </p>
                   
                   <button 
                     type="submit" 
                     disabled={status === 'sending'}
-                    className={`px-8 py-3 rounded-full border border-white/40 text-white font-bold flex items-center justify-center gap-3 transition-all duration-300 group whitespace-nowrap self-start sm:self-auto ${
+                    className={`px-8 py-3.5 rounded-full border text-black font-bold flex items-center justify-center gap-3 transition-all duration-300 group whitespace-nowrap self-start sm:self-auto ${
                       status === 'sending' 
-                        ? 'opacity-50 cursor-not-allowed bg-white/10' 
+                        ? 'opacity-50 cursor-not-allowed bg-white/10 text-white border-white/20' 
                         : status === 'success'
-                        ? 'bg-green-600 border-green-500 text-white shadow-[0_0_20px_rgba(22,163,74,0.4)]'
+                        ? 'bg-green-500 border-green-400 text-black shadow-[0_0_20px_rgba(34,197,94,0.5)]'
                         : status === 'error'
-                        ? 'bg-red-800 border-red-700 text-white'
-                        : 'hover:bg-[#00FF41] hover:text-black'
+                        ? 'bg-red-600 border-red-500 text-white'
+                        : 'bg-[#00FF41] border-[#00FF41] hover:bg-[#00D4FF] hover:border-[#00D4FF]'
                     }`}
                   >
                     {status === 'sending' ? (
-                      <span className="flex items-center gap-2">
+                      <span className="flex items-center gap-2 text-white">
                         <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24" fill="none">
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
@@ -225,13 +207,9 @@ const Contact = () => {
                         Sending...
                       </span>
                     ) : status === 'success' ? (
-                      <span className="flex items-center gap-2">
-                        Sent Successfully ✓
-                      </span>
+                      <span>Message Sent ✓</span>
                     ) : status === 'error' ? (
-                      <span className="flex items-center gap-2">
-                        Failed — Try Again
-                      </span>
+                      <span>Failed — Try Again</span>
                     ) : 'Send Message'}
                     
                     {status === 'idle' && (
@@ -245,7 +223,7 @@ const Contact = () => {
             </div>
           </form>
 
-        </div>
+        </motion.div>
       </div>
     </section>
   );

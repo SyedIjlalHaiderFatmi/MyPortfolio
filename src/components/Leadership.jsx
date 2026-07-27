@@ -1,15 +1,18 @@
-import React, { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { leadershipList } from '../data/portfolioData';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const LeadershipItem = ({ item, index }) => {
   const isEven = index % 2 === 0;
 
   return (
-    <div className="leadership-card relative flex flex-col md:flex-row items-center justify-between mb-12 md:mb-16 w-full group">
+    <motion.div 
+      initial={{ opacity: 0, x: isEven ? -20 : 20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, amount: 0.05 }}
+      transition={{ duration: 0.4, delay: index * 0.08 }}
+      className="relative flex flex-col md:flex-row items-center justify-between mb-12 md:mb-16 w-full group"
+    >
       {/* Timeline line dot */}
       <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-4 h-4 bg-[#00FF41] rounded-full border-4 border-black z-30 shadow-[0_0_15px_#00FF41] group-hover:scale-125 transition-transform duration-300" />
 
@@ -19,20 +22,20 @@ const LeadershipItem = ({ item, index }) => {
           isEven ? 'md:text-right md:order-1' : 'md:text-left md:order-2'
         }`}
       >
-        <div className="bg-white/5 backdrop-blur-md border border-purple-500/20 rounded-2xl p-6 hover:border-purple-500/50 hover:shadow-[0_15px_35px_rgba(168,85,247,0.15)] transition-all duration-500">
+        <div className="bg-[#0C0C1D] backdrop-blur-md border border-[#00FF41]/20 rounded-2xl p-6 hover:border-[#00FF41]/50 hover:shadow-[0_15px_35px_rgba(0,255,65,0.15)] transition-all duration-500 hud-corners">
           <div className={`flex flex-wrap gap-2 items-center mb-3 ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
-            <span className="terminal-badge bg-[#00FF41]/20 text-[#00FF41] text-[10px] font-black tracking-widest uppercase py-1 px-3 rounded-full border border-[#00FF41]/30">
+            <span className="bg-[#00FF41]/20 text-[#00FF41] text-[10px] font-jetbrains font-black tracking-widest uppercase py-1 px-3 rounded-full border border-[#00FF41]/30">
               {item.badge}
             </span>
           </div>
           
-          <h3 className="text-white text-xl font-black mb-1 tracking-tight group-hover:text-[#00FF41] transition-colors">
+          <h3 className="text-white text-xl font-black mb-1 tracking-tight font-orbitron group-hover:text-[#00FF41] transition-colors">
             {item.title}
           </h3>
-          <p className="text-[#00D4FF] font-jetbrains text-xs font-bold tracking-wider uppercase mb-4">
+          <p className="text-[#00D4FF] text-xs font-bold font-jetbrains tracking-wider uppercase mb-4">
             {item.role}
           </p>
-          <p className="text-white/60 text-sm leading-relaxed font-medium">
+          <p className="text-slate-300 text-sm leading-relaxed font-medium">
             {item.description}
           </p>
         </div>
@@ -40,79 +43,46 @@ const LeadershipItem = ({ item, index }) => {
 
       {/* Spacing spacer for desktop */}
       <div className="hidden md:block w-[45%] order-2" />
-    </div>
+    </motion.div>
   );
 };
 
 const Leadership = () => {
-  const sectionRef = useRef(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Timeline line animation
-      gsap.fromTo('.timeline-line', 
-        { height: 0 },
-        {
-          height: '100%',
-          ease: 'none',
-          scrollTrigger: {
-            trigger: '.timeline-container',
-            start: 'top 80%',
-            end: 'bottom 20%',
-            scrub: true
-          }
-        }
-      );
-
-      // Stagger leadership cards
-      gsap.from('.leadership-card', {
-        opacity: 0,
-        y: 15,
-        duration: 0.4,
-        stagger: 0.06,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.timeline-container',
-          start: 'top 92%',
-          toggleActions: 'play none none none',
-        }
-      });
-    }, sectionRef);
-    
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section ref={sectionRef} className="bg-[#050510] pt-24 pb-32 px-6 md:px-12 w-full relative overflow-hidden font-sans bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:80px_80px]">
+    <section className="bg-[#050510] pt-24 pb-32 px-6 md:px-12 w-full relative overflow-hidden font-sans border-t border-[#00FF41]/10 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:80px_80px]">
       
       {/* Torn paper divider at top */}
       <div className="absolute top-0 left-0 w-full pointer-events-none z-10 transform -translate-y-[1px] rotate-180">
         <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-12 md:h-20 fill-[#12102A]">
-          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,119.62,189.5,99.8,242.79,81.82,282.88,63.6,321.39,56.44Z"></path>
+          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,119.62,189.5,99.8,242.79,81.82,282.88,63.6,321.39,56.44Z" />
         </svg>
       </div>
 
       <div className="max-w-6xl mx-auto relative z-20">
         
         {/* Header */}
-        <div className="mb-20 text-center">
-          <div className="terminal-badge inline-block border border-purple-500/30 rounded-full px-5 py-1.5 text-sm text-purple-300 font-bold mb-6 shadow-sm bg-purple-500/10 backdrop-blur-sm">
-            Activities
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.4 }}
+          className="mb-20 text-center"
+        >
+          <div className="terminal-badge mb-6 inline-block">
+            [ ACTIVITIES & RESPONSIBILITY ]
           </div>
           <h2 className="font-orbitron text-4xl md:text-5xl font-black text-white tracking-tight mb-4 uppercase">
             Leadership & Engagement
           </h2>
-          <p className="text-purple-200/60 text-base md:text-lg max-w-lg mx-auto leading-relaxed">
-            Coordinating events, leading team operations, and participating in tech summits.
+          <p className="text-slate-400 text-base md:text-lg max-w-lg mx-auto leading-relaxed">
+            Coordinating events, leading team operations, and managing tech club initiatives.
           </p>
-        </div>
+        </motion.div>
 
         {/* Timeline container */}
-        <div className="timeline-container relative w-full">
-          {/* Vertical central line placeholder (for absolute positioning context) */}
-          <div className="absolute left-4 md:left-1/2 -translate-x-1/2 top-2 bottom-2 w-[2px]">
-            <div className="timeline-line w-full bg-gradient-to-b from-[#00FF41] via-[#00FF41]/50 to-[#00D4FF]/10 origin-top" />
-          </div>
+        <div className="relative w-full">
+          {/* Vertical central line */}
+          <div className="absolute left-4 md:left-1/2 -translate-x-1/2 top-2 bottom-2 w-[2px] bg-gradient-to-b from-[#00FF41] via-[#00FF41]/50 to-[#00D4FF]/10" />
 
           {/* Timeline Items */}
           <div className="w-full">
