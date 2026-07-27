@@ -7,7 +7,6 @@ const SkillProgress = ({ name, level }) => {
     <div className="mb-4">
       <div className="flex justify-between items-center mb-1.5">
         <span className="text-white text-sm font-semibold tracking-wide font-jetbrains">{name}</span>
-        <span className="text-[#00D4FF] text-xs font-jetbrains font-bold">{level}%</span>
       </div>
       <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden border border-white/10">
         <motion.div 
