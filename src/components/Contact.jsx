@@ -23,12 +23,12 @@ const Contact = () => {
     const ctx = gsap.context(() => {
       gsap.from('.contact-form-card', {
         opacity: 0,
-        y: 50,
-        duration: 0.8,
+        y: 15,
+        duration: 0.4,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: ref.current,
-          start: 'top 70%',
+          start: 'top 92%',
           toggleActions: 'play none none none',
         }
       });

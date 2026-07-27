@@ -28,13 +28,13 @@ const SoftSkills = () => {
     const ctx = gsap.context(() => {
       gsap.from('.soft-skill-card', {
         opacity: 0,
-        y: 40,
-        duration: 0.8,
-        stagger: 0.15,
+        y: 15,
+        duration: 0.4,
+        stagger: 0.05,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 80%',
+          start: 'top 92%',
           toggleActions: 'play none none none',
         }
       });

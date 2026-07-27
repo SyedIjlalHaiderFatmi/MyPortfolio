@@ -13,16 +13,16 @@ const SkillProgress = ({ name, level }) => {
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: barRef.current,
-        start: 'top 90%',
+        start: 'top 95%',
         onEnter: () => {
           gsap.to(barRef.current, {
             width: `${level}%`,
-            duration: 1.2,
+            duration: 0.8,
             ease: 'power2.out'
           });
           gsap.to({ val: 0 }, {
             val: level,
-            duration: 1.2,
+            duration: 0.8,
             ease: 'power2.out',
             onUpdate: function() {
               if (percentRef.current) {
@@ -77,25 +77,25 @@ const TechnicalSkills = () => {
       // Header reveal
       gsap.from('.header-reveal', {
         opacity: 0,
-        y: 30,
-        duration: 0.8,
+        y: 15,
+        duration: 0.4,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 80%',
+          start: 'top 92%',
         }
       });
 
       // Cards stagger reveal
       gsap.from('.skill-card-reveal', {
         opacity: 0,
-        y: 40,
-        duration: 0.8,
-        stagger: 0.15,
+        y: 15,
+        duration: 0.4,
+        stagger: 0.05,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: '.skill-card-reveal',
-          start: 'top 85%',
+          start: 'top 95%',
         }
       });
     }, sectionRef);

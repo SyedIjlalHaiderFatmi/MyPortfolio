@@ -81,12 +81,12 @@ const Services = () => {
       // Header Reveal
       gsap.from('.header-reveal', {
         opacity: 0,
-        y: 40,
-        duration: 1,
+        y: 15,
+        duration: 0.5,
         ease: 'power3.out',
         scrollTrigger: {
           trigger: containerRef.current,
-          start: 'top 80%',
+          start: 'top 92%',
         }
       });
 
@@ -94,24 +94,24 @@ const Services = () => {
       gsap.from('.card-reveal', {
         opacity: 0,
         scale: 0.9,
-        y: 50,
-        duration: 0.8,
-        stagger: 0.2,
+        y: 15,
+        duration: 0.4,
+        stagger: 0.06,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: '.card-reveal',
-          start: 'top 80%',
+          start: 'top 92%',
         }
       });
 
       // End Text Reveal
       gsap.from('.end-text-reveal', {
         opacity: 0,
-        duration: 1.5,
+        duration: 0.6,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: '.end-text-reveal',
-          start: 'top 90%',
+          start: 'top 95%',
         }
       });
     }, containerRef);

@@ -43,13 +43,13 @@ const ContentCreator = () => {
       // Reveal header elements
       gsap.from('.header-reveal', {
         opacity: 0,
-        y: 30,
-        duration: 0.8,
-        stagger: 0.1,
+        y: 15,
+        duration: 0.4,
+        stagger: 0.04,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 80%',
+          start: 'top 92%',
           toggleActions: 'play none none none',
         }
       });
@@ -57,13 +57,13 @@ const ContentCreator = () => {
       // Reveal creator cards
       gsap.from('.creator-card', {
         opacity: 0,
-        y: 40,
-        duration: 0.8,
-        stagger: 0.15,
+        y: 15,
+        duration: 0.4,
+        stagger: 0.05,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: '.creator-container',
-          start: 'top 85%',
+          start: 'top 95%',
           toggleActions: 'play none none none',
         }
       });
@@ -71,13 +71,12 @@ const ContentCreator = () => {
       // Reveal CTA
       gsap.from('.creator-cta', {
         opacity: 0,
-        y: 30,
-        duration: 0.8,
-        delay: 0.3,
+        y: 15,
+        duration: 0.4,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: '.creator-container',
-          start: 'top 85%',
+          start: 'top 95%',
           toggleActions: 'play none none none',
         }
       });

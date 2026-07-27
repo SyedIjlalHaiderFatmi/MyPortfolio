@@ -30,23 +30,22 @@ const Certificates = () => {
         opacity: 0,
         scale: 0.8,
         duration: 0.6,
-        stagger: 0.1,
+        stagger: 0.04,
         ease: 'back.out(1.2)',
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 80%',
+          start: 'top 92%',
           toggleActions: 'play none none none',
         }
       });
       
       gsap.from('.view-all-btn', {
         opacity: 0,
-        y: 20,
+        y: 12,
         duration: 0.6,
-        delay: 0.5,
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 70%',
+          start: 'top 92%',
           toggleActions: 'play none none none',
         }
       });

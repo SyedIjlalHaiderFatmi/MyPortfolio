@@ -45,11 +45,11 @@ const About = () => {
       gsap.from('.badge-reveal', {
         opacity: 0,
         x: -50,
-        duration: 1,
+        duration: 0.5,
         ease: 'power3.out',
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 75%',
+          start: 'top 92%',
         }
       });
 
@@ -57,11 +57,11 @@ const About = () => {
       gsap.from('.content-reveal', {
         opacity: 0,
         x: 50,
-        duration: 1,
+        duration: 0.5,
         ease: 'power3.out',
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 75%',
+          start: 'top 92%',
         }
       });
 
@@ -69,12 +69,12 @@ const About = () => {
       gsap.from('.skill-reveal', {
         opacity: 0,
         scale: 0.5,
-        duration: 0.8,
-        stagger: 0.15,
+        duration: 0.4,
+        stagger: 0.05,
         ease: 'back.out(1.7)',
         scrollTrigger: {
           trigger: '.content-reveal',
-          start: 'top 60%',
+          start: 'top 92%',
         }
       });
     }, sectionRef);

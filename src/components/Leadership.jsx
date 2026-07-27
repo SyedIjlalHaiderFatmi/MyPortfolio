@@ -67,13 +67,13 @@ const Leadership = () => {
       // Stagger leadership cards
       gsap.from('.leadership-card', {
         opacity: 0,
-        y: 50,
-        duration: 0.8,
-        stagger: 0.2,
+        y: 15,
+        duration: 0.4,
+        stagger: 0.06,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: '.timeline-container',
-          start: 'top 80%',
+          start: 'top 92%',
           toggleActions: 'play none none none',
         }
       });
