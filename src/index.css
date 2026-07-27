@@ -1,0 +1,284 @@
+@import "tailwindcss";
+
+/* ========================================
+   DESIGN SYSTEM — Cybersecurity Portfolio
+   ======================================== */
+
+@theme {
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+}
+
+/* ─── Color Tokens ─── */
+:root {
+  --bg-void: #050510;
+  --bg-card: #0C0C1D;
+  --bg-elevated: #12102A;
+  --accent-green: #00FF41;
+  --accent-purple: #a855f7;
+  --accent-cyan: #00D4FF;
+  --accent-danger: #FF3333;
+  --accent-pink: #ec4899;
+  --text-primary: #E0E8F0;
+  --text-muted: #64748B;
+  --border-subtle: rgba(168, 85, 247, 0.15);
+  --glow-green: 0 0 20px rgba(0, 255, 65, 0.4);
+  --glow-purple: 0 0 20px rgba(168, 85, 247, 0.4);
+  --glow-cyan: 0 0 20px rgba(0, 212, 255, 0.4);
+  --glow-red: 0 0 20px rgba(255, 51, 51, 0.4);
+}
+
+/* ─── Base ─── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-void);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ─── Custom Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-void);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent-purple);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-green);
+}
+
+/* ─── Selection ─── */
+::selection {
+  background: rgba(0, 255, 65, 0.25);
+  color: #fff;
+}
+
+/* ─── Font Utilities ─── */
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+}
+.font-jetbrains {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ─── Neon Glow Text ─── */
+.neon-green {
+  color: var(--accent-green);
+  text-shadow: var(--glow-green);
+}
+.neon-purple {
+  color: var(--accent-purple);
+  text-shadow: var(--glow-purple);
+}
+.neon-cyan {
+  color: var(--accent-cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+/* ─── Gradient Text ─── */
+.gradient-text-cyber {
+  background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.gradient-text-purple {
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Terminal Cursor Blink ─── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.cursor-blink {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background-color: var(--accent-green);
+  margin-left: 4px;
+  animation: blink 1s step-end infinite;
+  vertical-align: middle;
+  box-shadow: var(--glow-green);
+}
+
+/* ─── Scanline Overlay ─── */
+.scanline-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 65, 0.015) 2px,
+    rgba(0, 255, 65, 0.015) 4px
+  );
+  opacity: 0.5;
+}
+
+/* ─── HUD Corner Brackets ─── */
+.hud-corners {
+  position: relative;
+}
+.hud-corners::before,
+.hud-corners::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: var(--accent-cyan);
+  pointer-events: none;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+.hud-corners::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+.hud-corners::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
+.hud-corners:hover::before,
+.hud-corners:hover::after {
+  opacity: 1;
+}
+
+/* ─── Neon Border Glow ─── */
+.neon-border-glow {
+  transition: box-shadow 0.5s ease;
+}
+.neon-border-glow:hover {
+  box-shadow: 0 0 25px rgba(0, 255, 65, 0.15), 0 0 50px rgba(0, 212, 255, 0.08), inset 0 0 25px rgba(0, 255, 65, 0.03);
+}
+
+/* ─── Glitch Effect ─── */
+@keyframes glitch-1 {
+  0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+  20% { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 2px); }
+  40% { clip-path: inset(60% 0 10% 0); transform: translate(3px, -1px); }
+  60% { clip-path: inset(40% 0 30% 0); transform: translate(-2px, 1px); }
+  80% { clip-path: inset(10% 0 70% 0); transform: translate(2px, -2px); }
+}
+
+.glitch-text {
+  position: relative;
+}
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.glitch-text::before {
+  color: var(--accent-cyan);
+  animation: glitch-1 3s infinite linear alternate-reverse;
+  opacity: 0.6;
+}
+.glitch-text::after {
+  color: var(--accent-danger);
+  animation: glitch-1 2s infinite linear alternate;
+  opacity: 0.4;
+}
+
+/* ─── Pulse Ring (for play button) ─── */
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+.pulse-ring::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 2px solid var(--accent-green);
+  border-radius: 50%;
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ─── Scroll-to-Top Button ─── */
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 50;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1px solid var(--accent-purple);
+  color: var(--accent-purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  box-shadow: var(--glow-purple);
+}
+.scroll-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.scroll-to-top:hover {
+  background: var(--accent-purple);
+  color: #000;
+}
+
+/* ─── GSAP Initial States ─── */
+.gs-reveal {
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform, opacity;
+}
+
+/* ─── Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .scanline-overlay {
+    display: none;
+  }
+  .glitch-text::before,
+  .glitch-text::after {
+    display: none;
+  }
+  .cursor-blink {
+    animation: none;
+    opacity: 1;
+  }
+  .gs-reveal {
+    opacity: 1;
+    visibility: visible;
+  }
+}
